@@ -1,0 +1,24 @@
+import pymysql
+
+try:
+    conn = pymysql.connect(
+        host="localhost" ,
+        user="root",
+        password="as6106",
+        database="example",
+        charset="utf8"
+    )
+    cur = conn.cursor()
+
+    cur.execute("SELECT id, name, email FROM users")
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
+
+except Exception as e:
+    print("SQL 에러 발생:", e)
+    conn.rollback()
+
+finally:
+    cur.close()
+    conn.close()
