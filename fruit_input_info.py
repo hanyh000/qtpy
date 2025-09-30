@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QFormLayout, QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QFormLayout, \
+QLineEdit, QPushButton, QMessageBox
 from db_helper import DB, DB_CONFIG
 
 class inputinfo(QDialog):
@@ -15,8 +16,8 @@ class inputinfo(QDialog):
         form = QFormLayout()
         form.addRow("이름", self.name)
         form.addRow("전화번호", self.phone)
-        form.addRow("전화번호", self.product_name)
-        form.addRow("전화번호", self.buy_qty)
+        form.addRow("상품명", self.product_name)
+        form.addRow("구매량", self.buy_qty)
 
         self.btn_buy = QPushButton("구매 신청")
         self.btn_buy.clicked.connect(self.try_buy)
@@ -29,11 +30,11 @@ class inputinfo(QDialog):
     def try_buy(self):
         pn = self.product_name.text().strip()
         if not pn:
-            QMessageBox.warning(self, "오류", "아이디와 비밀번호를 모두 입력하세요.")
+            QMessageBox.warning(self, "")
             return
 
         ok = self.db.verify_user(pn)
         if ok:
             self.accept()
         else:
-            QMessageBox.critical(self, "실패", "아이디 또는 비밀번호가 올바르지 않습니다.")
+            QMessageBox.critical(self, "")
