@@ -2,8 +2,8 @@ from PyQt5.QtWidgets import *
 from fruit_db_helper import DB, DB_CONFIG
 
 class buying(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
         self.setWindowTitle("구매 신청")
         self.db = DB(**DB_CONFIG)
 
