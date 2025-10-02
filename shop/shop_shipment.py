@@ -44,16 +44,16 @@ class shipment_dialog(QDialog):
                 raise ValueError
             
         except ValueError:
-            QMessageBox.warning(self, "입력 오류", "수정량은 1 이상의 숫자여야 합니다.")
+            QMessageBox.warning(self, "입력 오류", "출고량은 1 이상의 숫자여야 합니다.")
             return
         
         success = self.db.shipment_products(id, stock_qty)
 
         if success:
             self.sq.setValue(0)
-            QMessageBox.information(self, "성공", "수정이 완료되었습니다.")
+            QMessageBox.information(self, "성공", "출고가 완료되었습니다.")
             self.accept()
         else:
-            QMessageBox.warning(self, "실패", "수정에 실패했습니다. 정보 또는 수량을 확인하세요.")
+            QMessageBox.warning(self, "실패", "출고에 실패했습니다.")
             self.reject()
         
