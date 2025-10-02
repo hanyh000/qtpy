@@ -4,7 +4,7 @@ from fruit_db_helper import DB, DB_CONFIG
 class buying(QDialog):
     def __init__(self):
         super().__init__()
-        
+
         self.setWindowTitle("구매 신청")
         self.db = DB(**DB_CONFIG)
 
@@ -36,6 +36,7 @@ class buying(QDialog):
 
         try:
             buy_qty = int(buy_qty_text)
+            
         except ValueError:
             QMessageBox.warning(self, "입력 오류", "구매량은 숫자여야 합니다.")
             return

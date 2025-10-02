@@ -4,6 +4,7 @@ from fruit_db_helper import DB, DB_CONFIG
 class deliverying(QDialog):
     def __init__(self):
         super().__init__()
+        
         self.setWindowTitle("배송 관리")
         self.db = DB(**DB_CONFIG)
 

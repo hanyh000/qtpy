@@ -76,6 +76,7 @@ class DB:
     def delete_buyers(self, name, phone, product_name, buy_qty):
         check_sql = "SELECT COUNT(*) FROM buyers WHERE name=%s AND phone=%s AND product_name=%s"
         delete_sql = "DELETE FROM buyers WHERE VALUES (%s, %s, %s, %s)"
+        
         with self.connect() as conn:
             with conn.cursor() as cur:
                 cur.execute(check_sql, (name, phone, product_name))

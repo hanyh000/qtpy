@@ -9,6 +9,7 @@ from fruit_stock import stocking
 class fruitWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        
         self.setWindowTitle("회원 관리")
         self.db = DB(**DB_CONFIG)
 

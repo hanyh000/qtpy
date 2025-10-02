@@ -4,6 +4,7 @@ from fruit_db_helper import DB, DB_CONFIG
 class stocking(QDialog):
     def __init__(self):
         super().__init__()
+        
         self.setWindowTitle("입고")
         self.db = DB(**DB_CONFIG)
 
