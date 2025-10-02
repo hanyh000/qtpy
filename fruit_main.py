@@ -12,12 +12,10 @@ class fruitWindow(QMainWindow):
         self.setWindowTitle("회원 관리")
         self.db = DB(**DB_CONFIG)
 
-        # 중앙 위젯 및 레이아웃
         central = QWidget()
         self.setCentralWidget(central)
         vbox = QVBoxLayout(central)
 
-         # 상단: 입력 폼 + 추가 버튼
         form_box = QHBoxLayout()
         self.btn_stock = QPushButton("입고")
         self.btn_dvery = QPushButton("배송")
@@ -35,19 +33,15 @@ class fruitWindow(QMainWindow):
         form_box.addWidget(self.btn_ccl)
         form_box.addWidget(self.btn_buy)
         
-        
-        # 중앙: 테이블 위젯
         self.table = QTableWidget()
         self.table.setColumnCount(4)
         self.table.setHorizontalHeaderLabels(["상품ID", "상품명", "보유량(box)", "가격"])
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.verticalHeader().setVisible(False)
 
-        # 배치
         vbox.addLayout(form_box)
         vbox.addWidget(self.table)
 
-        # 초기 데이터 로드
         self.load_product()
 
     def load_product(self):

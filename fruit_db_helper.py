@@ -27,7 +27,6 @@ class DB:
     def connect(self):
         return pymysql.connect(**self.config)
 
-    #구매자 정보 넘기기
     def verify_buyers(self,name, phone):
         sql = "SELECT COUNT(*) FROM buyers WHERE name=%s AND phone=%s"
         with self.connect() as conn:
@@ -36,14 +35,13 @@ class DB:
                 count, = cur.fetchone()
                 return count == 1
 
-    # 과일 전체 조회
     def fetch_products(self):
         sql = "SELECT product_id, product_name, hold_qty, price FROM products ORDER BY product_name"
         with self.connect() as conn:
             with conn.cursor() as cur:
                 cur.execute(sql)
                 return cur.fetchall()
-    # 구매자 정보  
+
     def fetch_buyers(self):
         sql = "SELECT name, phone, product_name, buy_qty FROM buyers ORDER BY name"
         with self.connect() as conn:
@@ -51,28 +49,26 @@ class DB:
                 cur.execute(sql)
                 return cur.fetchall()
 
-
-    # 구매자 정보
     def insert_or_update_buyer(self, name, phone, product_name, buy_qty):
         try:
             with self.connect() as conn:
                 with conn.cursor() as cur:
-                # 이미 구매 기록이 있는지 확인
+
                     sql_check = "SELECT buy_qty FROM buyers WHERE phone = %s AND product_name = %s"
                     cur.execute(sql_check, (phone, product_name))
                     result = cur.fetchone()
 
                     if result:
-                    # 기존 구매량 업데이트
                         new_qty = result[0] + buy_qty
                         sql_update = "UPDATE buyers SET buy_qty = %s WHERE phone = %s AND product_name = %s"
                         cur.execute(sql_update, (new_qty, phone, product_name))
+
                     else:
-                    # 신규 구매 기록 삽입
                         sql_insert = "INSERT INTO buyers (name, phone, product_name, buy_qty) VALUES (%s, %s, %s, %s)"
                         cur.execute(sql_insert, (name, phone, product_name, buy_qty))
                 conn.commit()
             return True
+        
         except Exception as e:
             print(f"insert_or_update_buyer error: {e}")
             conn.rollback()
@@ -98,13 +94,11 @@ class DB:
                         conn.rollback()
                         return False
 
-        
-    #구매 신청시 보유량 계산
     def buying(self, name, phone):
         try:
             with self.connect() as conn:
                 with conn.cursor() as cur:
-                    # 1. 해당 구매자의 구매 정보 조회
+
                     select_sql = "SELECT product_name, buy_qty FROM buyers WHERE name = %s AND phone = %s"
                     cur.execute(select_sql, (name, phone))
                     result = cur.fetchone()
@@ -126,7 +120,6 @@ class DB:
                     if buy_qty > hold_qty:
                         raise Exception("보유량보다 많이 구매할 수 없습니다.")
 
-                    # 2. 해당 상품 보유량 업데이트
                     update_sql = "UPDATE products SET hold_qty = hold_qty - %s WHERE product_name = %s"
                     cur.execute(update_sql, (buy_qty, product_name))
 
@@ -140,7 +133,7 @@ class DB:
         try:
             with self.connect() as conn:
                 with conn.cursor() as cur:
-                # 보유량 증가 처리 (기존 구매량 products에 반영)
+
                     cur.execute("SELECT product_name, buy_qty FROM buyers WHERE phone = %s", (phone,))
                     buys = cur.fetchall()
 
@@ -148,7 +141,6 @@ class DB:
                         update_sql = "UPDATE products SET hold_qty = hold_qty + %s WHERE product_name = %s"
                         cur.execute(update_sql, (buy_qty, product_name))
 
-                # 구매 기록 삭제
                     delete_sql = "DELETE FROM buyers WHERE phone = %s"
                     cur.execute(delete_sql, (phone,))
 
@@ -163,7 +155,7 @@ class DB:
         try:
             with self.connect() as conn:
                 with conn.cursor() as cur:
-                    # 1. 기존 구매량 조회
+
                     check_sql = "SELECT buy_qty FROM buyers WHERE name = %s AND phone = %s AND product_name = %s"
                     cur.execute(check_sql, (name, phone, product_name))
                     row = cur.fetchone()
@@ -174,18 +166,15 @@ class DB:
 
                     current_buy_qty = row[0]
 
-                # 2. 수정량 > 구매량 → 오류
                     if edit_qty > current_buy_qty:
                         print("수정 실패: 수정량이 구매량보다 많음")
                         return False
 
                     new_buy_qty = current_buy_qty - edit_qty
 
-                # 3. buyers 테이블 업데이트
                     update_buyers_sql = " UPDATE buyers SET buy_qty = %s WHERE name = %s AND phone = %s AND product_name = %s"
                     cur.execute(update_buyers_sql, (new_buy_qty, name, phone, product_name))
 
-                # 4. products 테이블 보유량 증가
                     update_products_sql = "UPDATE products SET hold_qty = hold_qty + %s WHERE product_name = %s"
                     cur.execute(update_products_sql, (edit_qty, product_name))
 
@@ -226,5 +215,4 @@ class DB:
                         sql_insert = "INSERT INTO products (product_id, product_name, hold_qty, price) VALUES (%s, %s, %s, %s)"
                         cur.execute(sql_insert, (product_id, product_name, stock_qty, price ))
                 conn.commit()
-            return True
-                    
+            return True         

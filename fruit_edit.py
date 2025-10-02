@@ -1,5 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QFormLayout, \
-QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtWidgets import *
 from fruit_db_helper import DB, DB_CONFIG
 
 class editing(QDialog):
@@ -34,7 +33,6 @@ class editing(QDialog):
         product_name = self.product_name.text().strip()
         edit_qty_text = self.edit_qty.text().strip()
 
-    # 입력값 검증
         if not (name and phone and product_name and edit_qty_text):
             QMessageBox.warning(self, "입력 오류", "모든 정보를 입력하세요.")
             return
@@ -46,8 +44,7 @@ class editing(QDialog):
         except ValueError:
             QMessageBox.warning(self, "입력 오류", "수정량은 1 이상의 숫자여야 합니다.")
             return
-
-    # DB edits() 호출
+        
         success = self.db.edits(name, phone, product_name, edit_qty)
 
         if success:

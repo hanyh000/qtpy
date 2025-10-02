@@ -7,10 +7,8 @@ class deliverying(QDialog):
         self.setWindowTitle("배송 관리")
         self.db = DB(**DB_CONFIG)
 
-        # 중앙 위젯 및 레이아웃
         vbox = QVBoxLayout()
 
-        # 상단: 입력 폼 + 추가 버튼
         form_box = QHBoxLayout()
         self.input_name = QLineEdit()
         self.input_phone = QLineEdit()
@@ -23,19 +21,17 @@ class deliverying(QDialog):
         form_box.addWidget(self.input_phone)
         form_box.addWidget(self.btn_add)
 
-        # 중앙: 테이블 위젯
         self.table = QTableWidget()
         self.table.setColumnCount(4)
         self.table.setHorizontalHeaderLabels(["이름", "전화번호", "상품명", "구매량(box)"])
-        self.table.setEditTriggers(self.table.NoEditTriggers)  # 표준 예시: 목록은 읽기 전용
+        self.table.setEditTriggers(self.table.NoEditTriggers)
         self.table.verticalHeader().setVisible(False)
 
-        # 배치
         vbox.addWidget(self.table)
         vbox.addLayout(form_box)
 
         self.setLayout(vbox)
-        # 초기 데이터 로드
+
         self.load_buyers()
     def load_buyers(self):
         rows = self.db.fetch_buyers()

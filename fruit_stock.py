@@ -1,5 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QFormLayout, \
-QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtWidgets import *
 from fruit_db_helper import DB, DB_CONFIG
 
 class stocking(QDialog):
@@ -26,6 +25,7 @@ class stocking(QDialog):
         layout.addLayout(form)
         layout.addWidget(self.btn_stock)
         self.setLayout(layout)
+
     def try_stock(self):
         pi = self.product_id.text()
         pn = self.product_name.text()

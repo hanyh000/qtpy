@@ -40,17 +40,16 @@ class buying(QDialog):
             QMessageBox.warning(self, "입력 오류", "구매량은 숫자여야 합니다.")
             return
     
-    # 구매 신청 시도
         success = self.db.insert_or_update_buyer(name, phone, product_name, buy_qty)
         if not success:
             QMessageBox.warning(self, "구매 실패", "구매 신청에 실패했습니다.")
             return
         
-    # 보유량 업데이트 시도
         try:
             self.db.buying(name, phone)
             QMessageBox.information(self, "성공", "구매 및 보유량 업데이트 성공")
-            self.accept()  # 창 닫기 등 필요 시
+            self.accept()  
+
         except Exception as e:
             QMessageBox.critical(self, "오류", f"보유량 업데이트 실패: {e}")
             self.reject()

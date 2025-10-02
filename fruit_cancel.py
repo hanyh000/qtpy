@@ -28,7 +28,6 @@ class canceling(QDialog):
             QMessageBox.warning(self, "입력 오류", "전화번호를 입력하세요.")
             return
 
-    # 구매 기록 존재 여부 확인
         try:
             with self.db.connect() as conn:
                 with conn.cursor() as cur:
@@ -39,14 +38,15 @@ class canceling(QDialog):
                 if count == 0:
                     QMessageBox.warning(self, "취소 실패", "해당 전화번호의 구매 기록이 없습니다.")
                     return
+                
         except Exception as e:
             QMessageBox.critical(self, "오류", f"작업 중 오류 발생: {e}")
             return
 
-    # cancel 메서드 호출
         if self.db.cancel(phone):
             QMessageBox.information(self, "성공", "구매 기록 취소 및 보유량 업데이트 완료")
             self.accept()
+
         else:
             QMessageBox.critical(self, "오류", "취소 처리 중 오류 발생")
             self.reject()
