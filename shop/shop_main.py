@@ -55,16 +55,16 @@ class shopwindow(QMainWindow) :
 
     def stock(self):
         dlg = stock_dialog()
-        if dlg.exec_( ) == stock_dialog.accepted:
+        if dlg.exec_( ) == stock_dialog.Accepted:
             self.load_products()
         self.show()
     def shipment(self):
         dlg = shipment_dialog()
-        if dlg.exec_( ) == shipment_dialog.accepted:
+        if dlg.exec_( ) == shipment_dialog.Accepted:
             self.load_products()
         self.show()
     def remove(self):
         dlg = remove_dialog()
-        if dlg.exec_( ) == remove_dialog.accepted:
+        if dlg.exec_( ) == remove_dialog.Accepted:
             self.load_products()
         self.show()
