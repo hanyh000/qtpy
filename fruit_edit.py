@@ -56,3 +56,4 @@ class editing(QDialog):
             self.accept()
         else:
             QMessageBox.warning(self, "실패", "수정에 실패했습니다. 정보 또는 수량을 확인하세요.")
+            self.reject()

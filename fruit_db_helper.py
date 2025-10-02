@@ -75,6 +75,7 @@ class DB:
             return True
         except Exception as e:
             print(f"insert_or_update_buyer error: {e}")
+            conn.rollback()
             return False
         
     def delete_buyers(self, name, phone, product_name, buy_qty):
@@ -99,18 +100,41 @@ class DB:
 
         
     #구매 신청시 보유량 계산
-    def buying(self):
+    def buying(self, name, phone):
         try:
             with self.connect() as conn:
                 with conn.cursor() as cur:
-                    # 예: products 테이블 보유량 업데이트 쿼리 실행
-                    update_sql = "UPDATE products p JOIN buyers b ON p.product_name = b.product_name SET p.hold_qty = p.hold_qty - b.buy_qty" 
-                    cur.execute(update_sql)
+                    # 1. 해당 구매자의 구매 정보 조회
+                    select_sql = "SELECT product_name, buy_qty FROM buyers WHERE name = %s AND phone = %s"
+                    cur.execute(select_sql, (name, phone))
+                    result = cur.fetchone()
+
+                    if not result:
+                        raise Exception("구매자 정보가 존재하지 않습니다.")
+
+                    product_name, buy_qty = result
+
+                    check_sql = "SELECT hold_qty FROM products WHERE product_name = %s"
+                    cur.execute(check_sql, (product_name,))
+                    hold_qty_result = cur.fetchone()
+
+                    if not hold_qty_result:
+                        raise Exception("상품이 존재하지 않습니다.")
+
+                    hold_qty = hold_qty_result[0]
+
+                    if buy_qty > hold_qty:
+                        raise Exception("보유량보다 많이 구매할 수 없습니다.")
+
+                    # 2. 해당 상품 보유량 업데이트
+                    update_sql = "UPDATE products SET hold_qty = hold_qty - %s WHERE product_name = %s"
+                    cur.execute(update_sql, (buy_qty, product_name))
+
                 conn.commit()
         except Exception as e:
             print(f"buying error: {e}")
+            conn.rollback()
             raise
-
 
     def cancel(self, phone):
         try:
@@ -132,11 +156,8 @@ class DB:
                 return True
         except Exception as e:
             print(f"cancel error: {e}")
+            conn.rollback()
             return False
-            
-        except Exception as e:
-            print(f"buying Error: {e}")
-            raise
     
     def edits(self, name, phone, product_name, edit_qty):
         try:
@@ -173,6 +194,7 @@ class DB:
 
         except Exception as e:
             print(f"edits error: {e}")
+            conn.rollback()
             return False
 
     def verify_buyer (self,name,phone):

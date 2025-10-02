@@ -49,3 +49,4 @@ class canceling(QDialog):
             self.accept()
         else:
             QMessageBox.critical(self, "오류", "취소 처리 중 오류 발생")
+            self.reject()

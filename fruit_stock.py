@@ -51,3 +51,4 @@ class stocking(QDialog):
             self.accept()
         else:
             QMessageBox.warning(self, "실패", "입고에 실패했습니다. 정보를 확인하세요.")
+            self.reject()

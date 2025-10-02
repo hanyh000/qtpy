@@ -1,6 +1,4 @@
-from PyQt5.QtWidgets import  QDialog, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QTableWidget, \
-QTableWidgetItem,QLabel, QLineEdit, QPushButton, QMessageBox,QDialog, QVBoxLayout, QFormLayout, \
-QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtWidgets import  *
 from fruit_db_helper import DB, DB_CONFIG
 
 class deliverying(QDialog):
@@ -28,7 +26,7 @@ class deliverying(QDialog):
         # 중앙: 테이블 위젯
         self.table = QTableWidget()
         self.table.setColumnCount(4)
-        self.table.setHorizontalHeaderLabels(["이름", "전화번호", "상품명", "구매량"])
+        self.table.setHorizontalHeaderLabels(["이름", "전화번호", "상품명", "구매량(box)"])
         self.table.setEditTriggers(self.table.NoEditTriggers)  # 표준 예시: 목록은 읽기 전용
         self.table.verticalHeader().setVisible(False)
 
@@ -48,6 +46,7 @@ class deliverying(QDialog):
             self.table.setItem(r, 2, QTableWidgetItem(product_name))
             self.table.setItem(r, 3, QTableWidgetItem(str(buy_qty)))
         self.table.resizeColumnsToContents()
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
     def try_delivery(self):
         nm = self.input_name.text().strip()
@@ -58,7 +57,8 @@ class deliverying(QDialog):
 
         if self.db.verify_buyer(nm, pe):
             self.db.delivery(pe)
-
+            QMessageBox.information(self, "성공", "배송이 완료되었습니다.")
             self.accept()
         else:
             QMessageBox.critical(self, "실패", "아이디 또는 비밀번호가 올바르지 않습니다.")
+            self.reject()

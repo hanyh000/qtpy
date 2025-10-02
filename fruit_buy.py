@@ -48,8 +48,9 @@ class buying(QDialog):
         
     # 보유량 업데이트 시도
         try:
-            self.db.buying()
+            self.db.buying(name, phone)
             QMessageBox.information(self, "성공", "구매 및 보유량 업데이트 성공")
             self.accept()  # 창 닫기 등 필요 시
         except Exception as e:
             QMessageBox.critical(self, "오류", f"보유량 업데이트 실패: {e}")
+            self.reject()

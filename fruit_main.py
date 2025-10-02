@@ -1,5 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QTableWidget, \
-QTableWidgetItem,QLabel, QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtWidgets import *
 from fruit_db_helper import DB, DB_CONFIG
 from fruit_buy import buying
 from fruit_cancel import canceling
@@ -40,7 +39,7 @@ class fruitWindow(QMainWindow):
         # 중앙: 테이블 위젯
         self.table = QTableWidget()
         self.table.setColumnCount(4)
-        self.table.setHorizontalHeaderLabels(["상품ID", "상품명", "보유량", "가격"])
+        self.table.setHorizontalHeaderLabels(["상품ID", "상품명", "보유량(box)", "가격"])
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.verticalHeader().setVisible(False)
 
@@ -59,25 +58,36 @@ class fruitWindow(QMainWindow):
             self.table.setItem(r, 1, QTableWidgetItem(product_name))
             self.table.setItem(r, 2, QTableWidgetItem(str(hold_qty)))
             self.table.setItem(r, 3, QTableWidgetItem(str(price)))
-        #self.table.resizeColumnsToContents()
+        self.table.resizeColumnsToContents()
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.table.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
-    def exam1(self):
-        input = stocking()
-        input.exec()
-        pass
-    def exam2(self):
-        input = deliverying()
-        input.exec()
-        pass
-    def exam3(self):
-        input = editing()
-        input.exec()
-        pass
-    def exam4(self):
-        input = canceling()
-        input.exec()
-        pass
-    def exam5(self):
-        input = buying()
-        input.exec()
-        pass
+    def exam1(self):  # 입고
+        dlg = stocking()
+        if dlg.exec_() == QDialog.Accepted:
+            self.load_product()
+        self.show()
+
+    def exam2(self):  # 배송
+        dlg = deliverying()
+        if dlg.exec_() == QDialog.Accepted:
+            self.load_product()
+        self.show()
+
+    def exam3(self):  # 수정
+        dlg = editing()
+        if dlg.exec_() == QDialog.Accepted:
+            self.load_product()
+        self.show()
+
+    def exam4(self):  # 취소
+        dlg = canceling()
+        if dlg.exec_() == QDialog.Accepted:
+            self.load_product()
+        self.show()
+
+    def exam5(self):  # 구매
+        dlg = buying()
+        if dlg.exec_() == QDialog.Accepted:
+            self.load_product()
+        self.show()
