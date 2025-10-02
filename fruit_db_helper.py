@@ -83,11 +83,13 @@ class DB:
                 if count > 0:
                     print("이미 구매 기록이 존재합니다.")
                     return False
+                
                 else:
                     try:
                         cur.execute(delete_sql, (name, phone, product_name, buy_qty))
                         conn.commit()
                         return True
+                    
                     except Exception as e:
                         print(f"insert_buyers error: {e}")
                         conn.rollback()
@@ -206,10 +208,12 @@ class DB:
                     check_sql = "SELECT hold_qty FROM products WHERE product_id = %s AND product_name = %s AND price = %s"
                     cur.execute(check_sql, (product_id,product_name,price))
                     row = cur.fetchone()
+
                     if row:
                         new_qty = row[0]+ stock_qty
                         update_sql = "UPDATE products SET hold_qty = %s WHERE product_id = %s AND product_name = %s AND price =%s"
                         cur.execute(update_sql, (new_qty, product_id, product_name, price))
+
                     else:
                         sql_insert = "INSERT INTO products (product_id, product_name, hold_qty, price) VALUES (%s, %s, %s, %s)"
                         cur.execute(sql_insert, (product_id, product_name, stock_qty, price ))

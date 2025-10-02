@@ -1,5 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QFormLayout, \
-QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtWidgets import *
 from fruit_db_helper import DB, DB_CONFIG
 
 class canceling(QDialog):

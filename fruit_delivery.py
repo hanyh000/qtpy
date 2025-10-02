@@ -55,6 +55,7 @@ class deliverying(QDialog):
             self.db.delivery(pe)
             QMessageBox.information(self, "성공", "배송이 완료되었습니다.")
             self.accept()
+            
         else:
             QMessageBox.critical(self, "실패", "아이디 또는 비밀번호가 올바르지 않습니다.")
             self.reject()

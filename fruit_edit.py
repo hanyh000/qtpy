@@ -41,6 +41,7 @@ class editing(QDialog):
             edit_qty = int(edit_qty_text)
             if edit_qty <= 0:
                 raise ValueError
+            
         except ValueError:
             QMessageBox.warning(self, "입력 오류", "수정량은 1 이상의 숫자여야 합니다.")
             return
@@ -51,6 +52,7 @@ class editing(QDialog):
             self.edit_qty.setText("0")
             QMessageBox.information(self, "성공", "수정이 완료되었습니다.")
             self.accept()
+            
         else:
             QMessageBox.warning(self, "실패", "수정에 실패했습니다. 정보 또는 수량을 확인하세요.")
             self.reject()

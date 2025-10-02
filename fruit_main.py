@@ -22,11 +22,13 @@ class fruitWindow(QMainWindow):
         self.btn_edit = QPushButton("수정")
         self.btn_ccl = QPushButton("취소")
         self.btn_buy = QPushButton("구매")
+        
         self.btn_stock.clicked.connect(self.exam1)
         self.btn_dvery.clicked.connect(self.exam2)
         self.btn_edit.clicked.connect(self.exam3)
         self.btn_ccl.clicked.connect(self.exam4)
         self.btn_buy.clicked.connect(self.exam5)
+
         form_box.addWidget(self.btn_stock)
         form_box.addWidget(self.btn_dvery)
         form_box.addWidget(self.btn_edit)
@@ -47,11 +49,13 @@ class fruitWindow(QMainWindow):
     def load_product(self):
         rows = self.db.fetch_products()
         self.table.setRowCount(len(rows))
+
         for r, (product_id, product_name, hold_qty, price) in enumerate(rows):
             self.table.setItem(r, 0, QTableWidgetItem(str(product_id)))
             self.table.setItem(r, 1, QTableWidgetItem(product_name))
             self.table.setItem(r, 2, QTableWidgetItem(str(hold_qty)))
             self.table.setItem(r, 3, QTableWidgetItem(str(price)))
+
         self.table.resizeColumnsToContents()
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.table.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)

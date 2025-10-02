@@ -35,10 +35,12 @@ class stocking(QDialog):
         if not (pi and pn and sq and price):
             QMessageBox.warning(self, "입력 오류", "입고량은 숫자여야 합니다.")
             return
+        
         try:
             stock_qty = int(sq)
             if stock_qty <= 0:
                 raise ValueError
+            
         except ValueError:
             QMessageBox.warning(self, "입력 오류", "입고량은 1 이상의 숫자여야 합니다.")
             return
@@ -49,6 +51,7 @@ class stocking(QDialog):
             self.stock_qty.setText("0")
             QMessageBox.information(self, "성공", "입고가 완료되었습니다.")
             self.accept()
+
         else:
             QMessageBox.warning(self, "실패", "입고에 실패했습니다. 정보를 확인하세요.")
             self.reject()
